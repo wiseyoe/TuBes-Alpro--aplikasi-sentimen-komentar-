@@ -1,0 +1,63 @@
+
+package main
+import "fmt"
+const nmax int = 10000
+type akun struct {
+    nama , komentar string 
+    kata int 
+}
+type tabstring [nmax] akun 
+
+func bacadata(A *tabstring , n,y *int ){
+    var i,y int 
+    var lagi int
+    lagi = 1 
+    i = 0 
+    *y = 0 
+    for lagi == 1 {
+        fmt.Scan(&A[i].nama)
+        fmt.Scan(&A[*y].komentar)
+        A[i].kata = *y 
+        fmt.Println("maskan komentar lagi ?")
+        fmt.Println("Ya                tidak ")
+        fmt.Println("1                   2 ")
+        fmt.Scan(&lagi)
+        i++
+        
+    }
+    *n = i 
+
+}
+func cetakdata(A tabstring , n , y int ) {
+    var i, kata int 
+    for i = 0 ; i <= A[i] + 1 
+    for  i<= n {
+        fmt.Println("username :", A[i].nama)
+        for i = 0 ; i <= a[i].kata
+        fmt.Println("Komentar" , A[y].komentar)
+        fmt.Println("")
+        i++
+        y++
+    }
+}
+func main() {
+    var n , z   int 
+    var A tabstring
+    bacadata(&A , &n)
+    cetakdata(A , n )
+    
+}
+/*
+func tampilanmenu(){
+  fmt.Println("  Judul tubes      ")
+  fmt.Println("-------------------------------")
+  fmt.Println("  MENU        ")
+  fmt.Println("-------------------------------")
+  fmt.Println("  1. masukan komentar     ")
+  fmt.Println("  2. mengedit komentar    ")
+  fmt.Println("  3. Hapus komentar ")
+  fmt.Println("  4. Statistik   ")
+  fmt.Println("-------------------------------")
+  fmt.Println("Pilih (1/2/3/4)")
+}
+*/
