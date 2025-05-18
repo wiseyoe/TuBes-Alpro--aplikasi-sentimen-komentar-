@@ -9,7 +9,7 @@ type akun struct {
 type tabstring [nmax] akun 
 
 func bacadata(A *tabstring , n,y *int ){
-    var i,y int 
+    var i int 
     var lagi int
     lagi = 1 
     i = 0 
@@ -23,28 +23,37 @@ func bacadata(A *tabstring , n,y *int ){
         fmt.Println("1                   2 ")
         fmt.Scan(&lagi)
         i++
+        *y++ 
         
     }
     *n = i 
 
 }
 func cetakdata(A tabstring , n , y int ) {
-    var i, kata int 
-    for i = 0 ; i <= A[i] + 1 
-    for  i<= n {
-        fmt.Println("username :", A[i].nama)
-        for i = 0 ; i <= a[i].kata
-        fmt.Println("Komentar" , A[y].komentar)
-        fmt.Println("")
-        i++
-        y++
-    }
+    var i int 
+    for i = 0 ; i <= n ; i++{
+        fmt.Println("username : " , A[i].nama)
+        if A[i].kata - A[i+1].kata < 0 {
+            for y = 0 ; y <= A[i].kata ; y ++ {
+                fmt.Print(A[y].komentar , " ")
+            } 
+        }else if A[i].kata + 1 > n {
+                for y = A[i-1].kata + 1 ; y <= n ; y++{
+                     fmt.Print(A[y].komentar , " ")
+                }
+        }else {
+                    for y = A[i-1].kata + 1 ;   y <= A[i].kata ; y++ {
+                         fmt.Print(A[y].komentar , " ")
+                    }
+                }
+        }
 }
+
 func main() {
-    var n , z   int 
+    var n , y  int 
     var A tabstring
-    bacadata(&A , &n)
-    cetakdata(A , n )
+    bacadata(&A , &n , &y)
+    cetakdata(A , n , y  )
     
 }
 /*
