@@ -2,23 +2,7 @@ package main
 import "fmt"
 
 const nmax int = 1000
-/*
-1
-rafi 
-aku suka bakso . 
-1
-dadan 
-aku benci bakso .
-1
-luffy 
-aku tidak benci bakso .
-1
-djkas 
-aku tidak suka bakso .
-1
-damn
-aku bakso . 
-*/
+
 type akun  struct {
     username string
     komen[nmax]string
