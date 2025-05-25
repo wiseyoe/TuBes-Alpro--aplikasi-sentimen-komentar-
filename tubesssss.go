@@ -2,7 +2,23 @@ package main
 import "fmt"
 
 const nmax int = 1000
-
+/*
+1
+rafi 
+aku suka bakso . 
+1
+dadan 
+aku benci bakso .
+1
+luffy 
+aku tidak benci bakso .
+1
+djkas 
+aku tidak suka bakso .
+1
+damn
+aku bakso . 
+*/
 type akun  struct {
     username string
     komen[nmax]string
@@ -64,9 +80,9 @@ func selectionsortsentimen(A *komentars, n int) {
 func statistik (A komentars , n int){
     var positif , negatif , netral   , i int 
     for i = 0 ; i < n ; i++ {
-        if A[i].sentimen == "positif"{
+        if A[i].sentimen == "Positif"{
             positif++
-        }else if A[i].sentimen == "negatif"{
+        }else if A[i].sentimen == "Negatif"{
             negatif++ 
         } else {
             netral++
@@ -75,8 +91,8 @@ func statistik (A komentars , n int){
    
     fmt.Println("banyak komentar : " , n )
     fmt.Println("komentar terpanjang oleh username  : " , A[findmax(A  , n )].username )
-    fmt.Println("Banyak komentar negatif : " , positif)
-    fmt.Println("Banyak komentar positif : " ,  negatif )
+    fmt.Println("Banyak komentar negatif : " ,  negatif)
+    fmt.Println("Banyak komentar positif : " , positif  )
     fmt.Println("Banyak komentar netral : " , netral )
     
     
@@ -146,11 +162,10 @@ func binarysearch(A *komentars, n int , Cari *int) {
     right = n - 1
 
     // Binary search untuk cari salah satu index yang cocok
-    for left <= right {
+    for left <= right && !found{
         mid = (left + right) / 2
         if A[mid].value == targetValue {
             found = true
-            break
         } else if targetValue < A[mid].value {
             right = mid - 1
         } else {
@@ -161,7 +176,7 @@ func binarysearch(A *komentars, n int , Cari *int) {
     if found {
         // Cari index awal sebenarnya (mundur ke kiri)
         i = mid
-        for i > 0 && A[i-1].value == targetValue {
+        for i > 0 && A[i-1].value == targetValue && pilihan != "1" {
             i--
         }
 
@@ -189,7 +204,6 @@ func binarysearch(A *komentars, n int , Cari *int) {
 
             if pilihan != "1" {
                 *Cari = i 
-                break
                 
             }
 
@@ -417,7 +431,7 @@ func main () {
         case 6 : cetakdata(A , n )
         case 7 : insertionsortkomen(&A,n)
         case 8 : selectionsortsentimen(&A , n )
-        //case 9 : statistik(A,n)
+        case 9 : statistik(A,n)
              
        }
         if pilihan == 10  {
@@ -431,7 +445,7 @@ func menu(){
     fmt.Println("   Silahkan Pilih Aktivitas    ")
     fmt.Println("==================================")
     fmt.Println("1. Masukan Komentar")
-    fmt.Println("2. Mengubah Komentar ")
+    fmt.Println("2. hapus Komentar ")
     fmt.Println("3. Menghapus Komentar")
     fmt.Println("4. Mencari Komentar ")
     fmt.Println( "5. mencari username  ")
