@@ -429,7 +429,7 @@ func menu(){
     fmt.Println("==================================")
     fmt.Println("1. Masukan Komentar")
     fmt.Println("2. Hapus Komentar ")
-    fmt.Println("3. Menghapus Komentar")
+    fmt.Println("3. Mengedit Komentar")
     fmt.Println("4. Mencari Komentar ")
     fmt.Println("5. Mencari username  ")
     fmt.Println("6. Cetak berdasarkan urutan input   ")
