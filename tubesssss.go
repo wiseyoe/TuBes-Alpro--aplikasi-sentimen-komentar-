@@ -65,9 +65,9 @@ func selectionsortsentimen(A *komentars, n int) {
 func statistik (A komentars , n int){
     var positif , negatif , netral   , i int 
     for i = 0 ; i < n ; i++ {
-        if A[i].sentimen == "Positif"{
+        if A[i].konotasi > 0 {
             positif++
-        }else if A[i].sentimen == "Negatif"{
+        }else if A[i].konotasi  < 0 {
             negatif++ 
         } else {
             netral++
@@ -76,9 +76,12 @@ func statistik (A komentars , n int){
    
     fmt.Println("Banyak komentar : " , n )
     fmt.Println("Komentar terpanjang oleh username  : " , A[findmax(A  , n )].username )
-    fmt.Println("Banyak komentar negatif : " ,  negatif)
-    fmt.Println("Banyak komentar positif : " , positif  )
-    fmt.Println("Banyak komentar netral : " , netral )
+	fmt.Println("komentar terpendek oleh username : " , A[findmax(A  , n )].username)
+	fmt.Println("jumlah komentar positif : " , positif )
+	fmt.Println("jumlah komentar negatif : " , negatif )
+	fmt.Println("jumlah komentar netral : " , netral  )
+	
+    
     
     
 }
