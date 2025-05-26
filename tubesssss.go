@@ -1,3 +1,4 @@
+
 package main 
 import "fmt"
 
@@ -99,12 +100,21 @@ func insertionsortkomen (A *komentars, n int)  {
 }
 func edit (A *komentars, n  int, Cari *int){
     var i , z  int
+	var konotasiB string 
      binarysearch(A, n, Cari)
     i  =  *Cari 
     
     fmt.Println("Masukan komentar baru dan akhiri dengan '.' : ")
     for {
     fmt.Scan(&A[i].komen[z])
+	konotasiB = A[i].komen[z] // sdmpen perkata 
+            if negatif(konotasiB) {
+                A[i].konotasi = A[i].konotasi - 1  // cek negatif 
+            } else if positif(konotasiB) {
+                A[i].konotasi = A[i].konotasi + 1  // cek positif 
+            } 
+            
+            
     if A[i].komen[z] == "." || z >= nmax {
         break
     }
