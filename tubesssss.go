@@ -7,11 +7,11 @@ const nmax int = 1000
 type akun  struct {
     username string
     komen[nmax]string
-    value int 
-    konotasi int 
-    sentinel int 
-    sentimen string 
-    id int 
+    value int // nilai username  
+    konotasi int //nilai komentar 
+    sentinel int  // panjang komentar 
+    sentimen string  // hasil nya (positif/negatif/netral)
+
     
 }
 
@@ -76,7 +76,7 @@ func statistik (A komentars , n int){
    
     fmt.Println("Banyak komentar : " , n )
     fmt.Println("Komentar terpanjang oleh username  : " , A[findmax(A  , n )].username )
-	fmt.Println("komentar terpendek oleh username : " , A[findmax(A  , n )].username)
+	fmt.Println("komentar terpendek oleh username : " , A[findmin(A  , n )].username)
 	fmt.Println("jumlah komentar positif : " , positif )
 	fmt.Println("jumlah komentar negatif : " , negatif )
 	fmt.Println("jumlah komentar netral : " , netral  )
@@ -311,7 +311,7 @@ func bacadata(A *komentars, n *int) {
                 sama = true
             }
             c++ 
-        A[i].id = i     
+           
         }
         for sama { // masuk ke loop kalau ketemu sama  
             fmt.Println("Username sudah digunakan, silakan gunakan username lain:")
@@ -353,7 +353,7 @@ func bacadata(A *komentars, n *int) {
         
 
         A[i].sentinel = z // simpen panjang komentar / berapa banyak kata di username nya 
-        A[i].id = i // simpen indeks username,komentar , panjang komentar 
+       
         for z = 0 ; z <= A[i].sentinel ; z++ {
             konotasiB = A[i].komen[z] 
             if specialkey(konotasiB) {
