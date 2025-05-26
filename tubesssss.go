@@ -73,8 +73,8 @@ func statistik (A komentars , n int){
         }
     }
    
-    fmt.Println("banyak komentar : " , n )
-    fmt.Println("komentar terpanjang oleh username  : " , A[findmax(A  , n )].username )
+    fmt.Println("Banyak komentar : " , n )
+    fmt.Println("Komentar terpanjang oleh username  : " , A[findmax(A  , n )].username )
     fmt.Println("Banyak komentar negatif : " ,  negatif)
     fmt.Println("Banyak komentar positif : " , positif  )
     fmt.Println("Banyak komentar netral : " , netral )
@@ -314,7 +314,7 @@ func bacadata(A *komentars, n *int) {
             }
         }
 
-        fmt.Println("masukan komentar dan akhiri kata terakhir dengan '.'")
+        fmt.Println("Masukan komentar dan akhiri kata terakhir dengan '.'")
         z = 0
         A[i].konotasi = 0 // reset konotasi sebelum diisi
         for  {
@@ -347,14 +347,14 @@ func bacadata(A *komentars, n *int) {
                 A[i].konotasi = A[i].konotasi * -1  // cek ada kata negasi 
             }
         }
-        fmt.Println("masih mau menambahkan komentar?")
+        fmt.Println("Masih mau menambahkan komentar?")
         fmt.Println("Ya                          Tidak")
         fmt.Println("1                              2")
         fmt.Scan(&lagi) // cek lanjut tambah komen atau ga 
         
         for lagi != 1 && lagi != 2 { // kondisi input selain 1 sama dua 
-            fmt.Println("tolong masukan angka sesuai opsi yang tertera")
-            fmt.Println("masih mau menambahkan komentar?")
+            fmt.Println("Tolong masukan angka sesuai opsi yang tertera")
+            fmt.Println("Masih mau menambahkan komentar?")
             fmt.Println("Ya                          Tidak")
             fmt.Println("1                              2")
             fmt.Scan(&lagi)
@@ -366,15 +366,15 @@ func bacadata(A *komentars, n *int) {
         }
        
     }
-    fmt.Println(*n    , "komentar berhasil ditambahkan")
+    fmt.Println(*n    , "Komentar berhasil ditambahkan")
     fmt.Println(" ")
 }
 func cetakdata(A komentars , n int ){ // cetak array biasa 
     var i,z int 
     for i = 0 ; i < n ; i++ {
-        fmt.Print("username : " , A[i].username)
+        fmt.Print("Username : " , A[i].username)
         fmt.Println(" ")
-        fmt.Println("komentar : ")
+        fmt.Println("Komentar : ")
         
         for z = 0 ; z < A[i].sentinel ; z++ {
         fmt.Print(A[i].komen[z]," ")
@@ -388,9 +388,8 @@ func cetakdata(A komentars , n int ){ // cetak array biasa
             A[i].sentimen = "Netral"
         }
         fmt.Println(" ")
-        fmt.Println("sentimen : " , A[i].sentimen )  
+        fmt.Println("Sentimen : " , A[i].sentimen )  
         fmt.Println(" ")
-        fmt.Println(A[i].konotasi)
     }
 }   
 func main () {
@@ -401,7 +400,7 @@ func main () {
         fmt.Scan(&pilihan)
         if pilihan > 10 || pilihan <= 0 {
             for pilihan > 10  ||  pilihan <= 0 {
-                fmt.Println("tolong masukan angka sesuai dengan opsi")
+                fmt.Println("Tolong masukan angka sesuai dengan opsi")
                  fmt.Scan(&pilihan)
             }
         }    
@@ -410,7 +409,7 @@ func main () {
          case 2: hapuskomentar(&A, &n, &Cari)
         case 3 :  edit(&A , n  , &Cari)
         case 4 : seqsearch(A , n )
-        case 5 : fmt.Print("silakan masukan username yang akan dicari ")
+        case 5 : fmt.Print("Tilakan masukan username yang akan dicari ")
                  binarysearch(&A,n , &Cari)
         case 6 : cetakdata(A , n )
         case 7 : insertionsortkomen(&A,n)
@@ -429,14 +428,14 @@ func menu(){
     fmt.Println("   Silahkan Pilih Aktivitas    ")
     fmt.Println("==================================")
     fmt.Println("1. Masukan Komentar")
-    fmt.Println("2. hapus Komentar ")
+    fmt.Println("2. Hapus Komentar ")
     fmt.Println("3. Menghapus Komentar")
     fmt.Println("4. Mencari Komentar ")
-    fmt.Println( "5. mencari username  ")
-    fmt.Println("6. cetak berdasarkan urutan input   ")
-    fmt.Println( "7. cetak berdasarkan panjang komentar (dari terpendek ke terbesar )")
-    fmt.Println( "8. cetak berdasarkan sentimen (positif ke negatif) ")
-    fmt.Println("9. statistik ")
+    fmt.Println("5. Mencari username  ")
+    fmt.Println("6. Cetak berdasarkan urutan input   ")
+    fmt.Println("7. Cetak berdasarkan panjang komentar (dari terpendek ke terbesar )")
+    fmt.Println("8. Cetak berdasarkan sentimen (positif ke negatif) ")
+    fmt.Println("9. Statistik ")
     fmt.Println("10. Exit ")
     fmt.Println("==================================")
     fmt.Print("pilih(1/2/3/4/5/6/7/8/9/10) ")
@@ -484,7 +483,7 @@ func seqsearch(A komentars, n int) {
         found = false
         i = 0
 
-        // Mencari semua komentar yang mengandung kata
+        // cari semua komentar yang mengandung kata
         for i <= n {
             z = 0
             // Mencari kata dalam komentar
@@ -492,7 +491,7 @@ func seqsearch(A komentars, n int) {
                 z++
             }
 
-            // Jika ditemukan
+            // Jika ketemu
             if z < A[i].sentinel {
                 if !found {
                     fmt.Println("Komentar yang mengandung kata '", cari, "':")
