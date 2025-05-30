@@ -7,11 +7,11 @@ const nmax int = 1000
 type akun  struct {
     username string
     komen[nmax]string
-    value int // nilai username  
-    konotasi int //nilai komentar 
-    sentinel int  // panjang komentar 
-    sentimen string  // hasil nya (positif/negatif/netral)
-
+    value int 
+    konotasi int 
+    sentinel int 
+    sentimen string 
+    id int 
     
 }
 
@@ -65,9 +65,9 @@ func selectionsortsentimen(A *komentars, n int) {
 func statistik (A komentars , n int){
     var positif , negatif , netral   , i int 
     for i = 0 ; i < n ; i++ {
-        if A[i].konotasi > 0 {
+        if A[i].sentimen == "Positif"{
             positif++
-        }else if A[i].konotasi  < 0 {
+        }else if A[i].sentimen == "Negatif"{
             negatif++ 
         } else {
             netral++
@@ -76,12 +76,9 @@ func statistik (A komentars , n int){
    
     fmt.Println("Banyak komentar : " , n )
     fmt.Println("Komentar terpanjang oleh username  : " , A[findmax(A  , n )].username )
-	fmt.Println("komentar terpendek oleh username : " , A[findmin(A  , n )].username)
-	fmt.Println("jumlah komentar positif : " , positif )
-	fmt.Println("jumlah komentar negatif : " , negatif )
-	fmt.Println("jumlah komentar netral : " , netral  )
-	
-    
+    fmt.Println("Banyak komentar negatif : " ,  negatif)
+    fmt.Println("Banyak komentar positif : " , positif  )
+    fmt.Println("Banyak komentar netral : " , netral )
     
     
 }
@@ -103,21 +100,12 @@ func insertionsortkomen (A *komentars, n int)  {
 }
 func edit (A *komentars, n  int, Cari *int){
     var i , z  int
-	var konotasiB string 
      binarysearch(A, n, Cari)
     i  =  *Cari 
     
     fmt.Println("Masukan komentar baru dan akhiri dengan '.' : ")
     for {
     fmt.Scan(&A[i].komen[z])
-	konotasiB = A[i].komen[z] // sdmpen perkata 
-            if negatif(konotasiB) {
-                A[i].konotasi = A[i].konotasi - 1  // cek negatif 
-            } else if positif(konotasiB) {
-                A[i].konotasi = A[i].konotasi + 1  // cek positif 
-            } 
-            
-            
     if A[i].komen[z] == "." || z >= nmax {
         break
     }
@@ -142,28 +130,23 @@ func hapuskomentar(A *komentars, n *int, Cari *int) {
         fmt.Println("Komentar tidak ditemukan atau tidak valid.")
     }
 }
-func binarysearch(A *komentars, n int , Cari *int) {
+func binarysearch(A *komentars, n int, Cari *int) {
     var left, right, mid, i, z int
     var cari, pilihan string
-    var targetValue int
-    var found bool = false
-
-    IsinilaiHurufPertama(A, n)
-    insertionsort(A, n)
-
+    var found bool
+    insertionsort(A,n)
     fmt.Print("Masukkan username yang dicari: ")
     fmt.Scan(&cari)
-    targetValue = hurufpertama(cari)
 
     left = 0
     right = n - 1
 
     // Binary search untuk cari salah satu index yang cocok
-    for left <= right && !found{
+    for left <= right && !found {
         mid = (left + right) / 2
-        if A[mid].value == targetValue {
+        if A[mid].username == cari {
             found = true
-        } else if targetValue < A[mid].value {
+        } else if cari < A[mid].username {
             right = mid - 1
         } else {
             left = mid + 1
@@ -171,26 +154,29 @@ func binarysearch(A *komentars, n int , Cari *int) {
     }
 
     if found {
-        // Cari index awal sebenarnya (mundur ke kiri)
+        // Mulai dari index ditemukan
         i = mid
-        for i > 0 && A[i-1].value == targetValue && pilihan != "1" {
+        // Mundur untuk cari index awal yang cocok (kalau ada duplikat)
+        for i > 0 && A[i-1].username == cari {
             i--
         }
 
-        for i < n && A[i].value == targetValue {
+        for i < n && A[i].username == cari {
             fmt.Println("Username:", A[i].username)
             fmt.Print("Komentar: ")
             for z = 0; z < A[i].sentinel; z++ {
                 fmt.Print(A[i].komen[z], " ")
             }
-            fmt.Println(" ")
+            fmt.Println()
+
             if A[i].konotasi < 0 {
-             A[i].sentimen = "Negatif"
-         } else if A[i].konotasi > 0 {
+                A[i].sentimen = "Negatif"
+            } else if A[i].konotasi > 0 {
                 A[i].sentimen = "Positif"
             } else {
                 A[i].sentimen = "Netral"
             }
+
             fmt.Println("Sentimen:", A[i].sentimen)
             fmt.Println("================================")
 
@@ -200,21 +186,21 @@ func binarysearch(A *komentars, n int , Cari *int) {
             fmt.Scan(&pilihan)
 
             if pilihan != "1" {
-                *Cari = i 
-                
+                *Cari = i
+                break
             }
 
             i++
         }
-
     } else {
-        fmt.Println("Tidak ada username yang cocok ")
+        fmt.Println("Tidak ada username yang cocok")
     }
 }
+
+
 func insertionsort (A *komentars, n int)  {
 	var i, j int
 	var temp akun
-    IsinilaiHurufPertama(A , n )
 	for i = 1; i < n; i++ {
 		temp = A[i]
 		j = i - 1
@@ -226,107 +212,13 @@ func insertionsort (A *komentars, n int)  {
 	}
 
 }
-func IsinilaiHurufPertama(A *komentars , n int ) {
-    var i int 
-    var huruf string
-    for i = 0 ; i < n ; i++{
-        huruf = A[i].username
-            A[i].value = hurufpertama(huruf)
-            
-    }
-}
-func hurufpertama(s string) int {
-    var firstChar byte
-    firstChar = s[0] 
-    switch {
-
-    case firstChar == 'A' || firstChar == 'a':
-        return 1
-    case firstChar == 'B' || firstChar == 'b':
-        return 2
-    case firstChar == 'C' || firstChar == 'c':
-        return 3
-    case firstChar == 'D' || firstChar == 'd':
-        return 4
-    case firstChar == 'E' || firstChar == 'e':
-        return 5
-    case firstChar == 'F' || firstChar == 'f':
-        return 6
-    case firstChar == 'G' || firstChar == 'g':
-        return 7
-    case firstChar == 'H' || firstChar == 'h':
-        return 8
-    case firstChar == 'I' || firstChar == 'i':
-        return 9
-    case firstChar == 'J' || firstChar == 'j':
-        return 10
-    case firstChar == 'K' || firstChar == 'k':
-        return 11
-    case firstChar == 'L' || firstChar == 'l':
-        return 12
-    case firstChar == 'M' || firstChar == 'm':
-        return 13
-    case firstChar == 'N' || firstChar == 'n':
-        return 14
-    case firstChar == 'O' || firstChar == 'o':
-        return 15
-    case firstChar == 'P' || firstChar == 'p':
-        return 16
-    case firstChar == 'Q' || firstChar == 'q':
-        return 17
-    case firstChar == 'R' || firstChar == 'r':
-        return 18
-    case firstChar == 'S' || firstChar == 's':
-        return 19
-    case firstChar == 'T' || firstChar == 't':
-        return 20
-    case firstChar == 'U' || firstChar == 'u':
-        return 21
-    case firstChar == 'V' || firstChar == 'v':
-        return 22
-    case firstChar == 'W' || firstChar == 'w':
-        return 23
-    case firstChar == 'X' || firstChar == 'x':
-        return 24
-    case firstChar == 'Y' || firstChar == 'y':
-        return 25
-    case firstChar == 'Z' || firstChar == 'z':
-        return 26
-    default:
-        return 0
-    }
-}
 func bacadata(A *komentars, n *int) {
-    var i, lagi, z, c int // kecuali lagi merupakan varibel iterasi ,lagi untuk milih opsi 
-    var konotasiB string // tampung kata buat di cek positif negatif 
-    var sama bool // buat berhenti loop 
+    var i, lagi, z int // kecuali lagi merupakan varibel iterasi ,lagi untuk milih opsi 
+    var konotasiB string // tampung kata buat di cek positif negatif  
     i = *n
     for {
         fmt.Println("Harap masukkan username (gunakan '_' jika menggunakan spasi ):")
         fmt.Scan(&A[i].username)
-        sama = false
-        c = 0 
-        for  c < i && !sama   { // seq search untuk cari username yang sama 
-            if A[i].username == A[c].username {
-                sama = true
-            }
-            c++ 
-           
-        }
-        for sama { // masuk ke loop kalau ketemu sama  
-            fmt.Println("Username sudah digunakan, silakan gunakan username lain:")
-            fmt.Scan(&A[i].username)
-            
-            c = 0 
-            sama = false
-            for  c < i && !sama   {
-            if A[i].username == A[c].username {
-                sama = true
-            }
-            c++ 
-            }
-        }
-
         fmt.Println("Masukan komentar dan akhiri kata terakhir dengan '.'")
         z = 0
         A[i].konotasi = 0 // reset konotasi sebelum diisi
@@ -353,7 +245,7 @@ func bacadata(A *komentars, n *int) {
         
 
         A[i].sentinel = z // simpen panjang komentar / berapa banyak kata di username nya 
-       
+        A[i].id = i // simpen indeks username,komentar , panjang komentar 
         for z = 0 ; z <= A[i].sentinel ; z++ {
             konotasiB = A[i].komen[z] 
             if specialkey(konotasiB) {
@@ -539,3 +431,4 @@ func seqsearch(A komentars, n int) {
         }
     }
 }
+
