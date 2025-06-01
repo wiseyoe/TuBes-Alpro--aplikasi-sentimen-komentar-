@@ -101,7 +101,7 @@ func insertionsortkomen (A *komentars, n int)  {
 func edit (A *komentars, n  int, Cari *int , found *bool){
     var i , z  int
      binarysearch(A, n, Cari , found)
-    if *found {
+    if *found  == true {
     i  =  *Cari 
     
     fmt.Println("Masukan komentar baru dan akhiri dengan '.' : ")
@@ -113,9 +113,12 @@ func edit (A *komentars, n  int, Cari *int , found *bool){
     z++
 }
     A[i].sentinel = z 
+	insertionsort(A,n)
+	fmt.Println("Proses Edit berhasil ")
     } else {
         fmt.Println("Proses edit dibatalkan karna Username tidak ditemukan ")
     }
+	
 
 }
 func hapuskomentar(A *komentars, n *int, Cari *int,found *bool) {
@@ -131,25 +134,28 @@ func hapuskomentar(A *komentars, n *int, Cari *int,found *bool) {
         }
         *n--
         fmt.Println("Komentar berhasil dihapus.")
+		insertionsort(A,*n)
     }
     }else {
         fmt.Println("Proses penghapusan dibatalkan karna username tidak ditemukan")
     }
+	
 }
 func binarysearch(A *komentars, n int, Cari *int, found *bool) {
     var left, right, mid, i, z int
     var cari, pilihan string
     var selected bool = false
+    var selesai bool = false
 
-    insertionsort(A, n)
+    insertionsort(A, n) 
 
     fmt.Print("Masukkan username yang dicari: ")
     fmt.Scan(&cari)
 
+    *found = false // reset 
     left = 0
     right = n - 1
 
-    // Binary search
     for left <= right && !*found {
         mid = (left + right) / 2
         if A[mid].username == cari {
@@ -163,12 +169,12 @@ func binarysearch(A *komentars, n int, Cari *int, found *bool) {
 
     if *found {
         i = mid
-        // Mundur  ke awal kalau ada duplikat 
+        // Mundur ke awal kalau ada duplikat 
         for i > 0 && A[i-1].username == cari {
             i--
         }
 
-        for i < n && A[i].username == cari {
+        for i < n && A[i].username == cari && !selesai {
             fmt.Println("Username:", A[i].username)
             fmt.Print("Komentar: ")
             for z = 0; z < A[i].sentinel; z++ {
@@ -193,11 +199,10 @@ func binarysearch(A *komentars, n int, Cari *int, found *bool) {
             fmt.Scan(&pilihan)
 
             if pilihan != "1" {
-                *Cari = i
+                *Cari = i  // update posisi 
                 selected = true
-                break
+                selesai = true // biar stop loop 
             }
-
             i++
         }
         if !selected {
@@ -209,8 +214,6 @@ func binarysearch(A *komentars, n int, Cari *int, found *bool) {
         fmt.Println("Tidak ada username yang cocok atau tidak ada komentar yang dipilih.")
     }
 }
-
-  
 
 
 func seqsearch(A komentars, n int) {
@@ -226,7 +229,7 @@ func seqsearch(A komentars, n int) {
         i = 0
 
      
-        for i <= n {
+        for i < n {
             z = 0
           
             for z < A[i].sentinel && A[i].komen[z] != cari {
@@ -303,67 +306,88 @@ func insertionsort (A *komentars, n int)  {
 
 }
 func bacadata(A *komentars, n *int) {
-    var i, lagi, z int // kecuali lagi merupakan varibel iterasi ,lagi untuk milih opsi 
-    var konotasiB string // tampung kata buat di cek positif negatif  
-    i = *n
-    for {
-        fmt.Println("Harap masukkan username (gunakan '_' jika menggunakan spasi ):")
-        fmt.Scan(&A[i].username)
-        fmt.Println("Masukan komentar dan akhiri kata terakhir dengan '.'")
-        z = 0
-        A[i].konotasi = 0 // reset konotasi sebelum diisi
-        for  {
-            if  z == nmax{
-                A[i].komen[z] = "."
-            }
-            fmt.Scan(&A[i].komen[z])
-            
-            if A[i].komen[z] == "."  {
-                break // berhenti input 
-            }
-            
-            konotasiB = A[i].komen[z] // sdmpen perkata 
-            if negatif(konotasiB) {
-                A[i].konotasi = A[i].konotasi - 1  // cek negatif 
-            } else if positif(konotasiB) {
-                A[i].konotasi = A[i].konotasi + 1  // cek positif 
-            } 
-            
-            z++  // lanjut kata selanjutnya 
-            
-        }
-        
+	var i, lagi, z,total int // kecuali lagi merupakan varibel iterasi ,lagi untuk milih opsi 
+	var konotasiB, konotasiB2 string // tampung kata buat di cek positif negatif  
+	i = *n
+	for {
+		fmt.Println("Harap masukkan username (gunakan '_' jika menggunakan spasi ):")
+		fmt.Scan(&A[i].username)
+		fmt.Println("Masukan komentar dan akhiri kata terakhir dengan '.'")
+		z = 0
+		A[i].konotasi = 0 // reset konotasi sebelum diisi
+		for {
+			if z >= nmax - 1  {
+				A[i].komen[z] = "."
+			}
+			fmt.Scan(&A[i].komen[z])
 
-        A[i].sentinel = z // simpen panjang komentar / berapa banyak kata di username nya 
-        A[i].id = i // simpen indeks username,komentar , panjang komentar 
-        for z = 0 ; z <= A[i].sentinel ; z++ {
-            konotasiB = A[i].komen[z] 
-            if specialkey(konotasiB) {
-                A[i].konotasi = A[i].konotasi * -1  // cek ada kata negasi 
+			if A[i].komen[z] == "." {
+				break // berhenti input 
+			}
+
+			z++ // lanjut kata selanjutnya 
+		}
+
+		A[i].sentinel = z // simpen panjang komentar / berapa banyak kata di username nya 
+		A[i].id = i       // simpen indeks username,komentar , panjang komentar 
+		
+	total = 0
+	z = 0
+for z < A[i].sentinel {
+    konotasiB = A[i].komen[z]
+
+    // cek apakah ada kata berikutnya (untuk specialkey + kata positif/negatif)
+    if specialkey(konotasiB) && z+1 < A[i].sentinel {
+        konotasiB2 = A[i].komen[z+1]
+        if positif(konotasiB2) {
+            if konotasiB2 == "suka" || konotasiB2 == "SUKA" || konotasiB2 == "Suka" {
+                total += 2 * -1
+            } else {
+                total += 1 * -1
             }
+        } else if negatif(konotasiB2) {
+            total += (-1) * -1
         }
-        fmt.Println("Masih mau menambahkan komentar?")
-        fmt.Println("Ya                          Tidak")
-        fmt.Println("1                              2")
-        fmt.Scan(&lagi) // cek lanjut tambah komen atau ga 
-        
-        for lagi != 1 && lagi != 2 { // kondisi input selain 1 sama dua 
-            fmt.Println("Tolong masukan angka sesuai opsi yang tertera")
-            fmt.Println("Masih mau menambahkan komentar?")
-            fmt.Println("Ya                          Tidak")
-            fmt.Println("1                              2")
-            fmt.Scan(&lagi)
+        z += 2 // lompat 2 kata karena sudah diproses pasangan
+    } else {
+        if positif(konotasiB) {
+            if konotasiB == "suka" || konotasiB == "SUKA" || konotasiB == "Suka" {
+                total += 2
+            } else {
+                total += 1
+            }
+        } else if negatif(konotasiB) {
+            total -= 1
         }
-         i++ // lanjut kata 
-        *n = i // ngitung berapa banyak akun 
-        if lagi == 2 {
-            break // berhentiin repeat until pertama 
-        }
-       
+        z++
     }
-    fmt.Println(*n    , "Komentar berhasil ditambahkan")
-    fmt.Println(" ")
 }
+A[i].konotasi = total
+
+
+
+		fmt.Println("Masih mau menambahkan komentar?")
+		fmt.Println("Ya                          Tidak")
+		fmt.Println("1                              2")
+		fmt.Scan(&lagi) // cek lanjut tambah komen atau ga 
+
+		for lagi != 1 && lagi != 2 { // kondisi input selain 1 sama dua 
+			fmt.Println("Tolong masukan angka sesuai opsi yang tertera")
+			fmt.Println("Masih mau menambahkan komentar?")
+			fmt.Println("Ya                          Tidak")
+			fmt.Println("1                              2")
+			fmt.Scan(&lagi)
+		}
+		i++        // lanjut kata 
+		*n = i     // ngitung berapa banyak akun 
+		if lagi == 2 {
+			break // berhentiin repeat until pertama 
+		}
+	}
+	fmt.Println(*n, "Komentar berhasil ditambahkan")
+	fmt.Println(" ")
+}
+
 func cetakdata(A komentars , n int ){ // cetak array biasa 
     var i,z int 
     for i = 0 ; i < n ; i++ {
@@ -385,6 +409,7 @@ func cetakdata(A komentars , n int ){ // cetak array biasa
         fmt.Println(" ")
         fmt.Println("Sentimen : " , A[i].sentimen )  
         fmt.Println(" ")
+		fmt.Println(A[i].konotasi)
     }
 }   
 func main () {
@@ -405,7 +430,7 @@ func main () {
          case 2: hapuskomentar(&A, &n, &Cari,&found)
         case 3 :  edit(&A , n  , &Cari,&found)
         case 4 : seqsearch(A , n )
-        case 5 :  binarysearch(&A,n , &Cari,&found )
+        case 5 : binarysearch(&A,n , &Cari,&found )
         case 6 : sortinputselection(&A,n)
         case 7 : insertionsortkomen(&A,n)
         case 8 : selectionsortsentimen(&A , n )
@@ -431,7 +456,7 @@ func menu(){
     fmt.Println("4. Mencari Komentar ")
     fmt.Println("5. Mencari username  ")
     fmt.Println("6. Cetak berdasarkan urutan input   ")
-    fmt.Println("7. Cetak berdasarkan panjang komentar (dari terpendek ke terbesar )")
+    fmt.Println("7. Cetak berdasarkan panjang komentar (dari terpendek ke terpanjang )")
     fmt.Println("8. Cetak berdasarkan sentimen (positif ke negatif) ")
     fmt.Println("9. cetak berdasarkan username  ")
     fmt.Println("10. Statistik ")
@@ -470,5 +495,3 @@ func specialkey(word string)bool { // cek kata negasi
            word == "gak" || word == "GAK" || word == "Gak" ||
            word == "bukan" || word == "BUKAN" || word == "Bukan"
 }
-
-
